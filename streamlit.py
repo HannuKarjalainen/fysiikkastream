@@ -4,12 +4,11 @@ import matplotlib.pyplot as plt
 import streamlit as st
 from scipy.fft import fft
 import folium
+from streamlit_folium import st_folium
 
 # Lataa data
-url1 = "https://raw.githubusercontent.com/HannuKarjalainen/fysiikkastream/refs/heads/main/Linear%20Acceleration.csv"
-url2 = "https://raw.githubusercontent.com/HannuKarjalainen/fysiikkastream/refs/heads/main/Location.csv"
-location_data = pd.read_csv(url2)
-df_step = pd.read_csv(url1)
+location_data = pd.read_csv('Location.csv')
+df_step = pd.read_csv('Linear Acceleration.csv')
 
 #Suodatetaan datasta selvästi kävelytaajuutta suurempitaajuuksiset vaihtelut pois
 from scipy.signal import butter,filtfilt
@@ -83,12 +82,6 @@ average_speed_kmh = average_speed * 3.6  # m/s to km/h
 step_length = total_distance / steps if steps > 0 else 0  # Estä nollalla jakaminen
 
 # Visualisointi
-# Luo kartta
-m = folium.Map(location=[location_data['Latitude (°)'].mean(), location_data['Longitude (°)'].mean()], zoom_start=15)
-points = list(zip(location_data['Latitude (°)'], location_data['Longitude (°)']))
-folium.PolyLine(points, color='blue', weight=2.5, opacity=1).add_to(m)
-m.save('map.html')
-
 # Streamlit
 st.title("Kävelyliikemittausanalyysi")
 st.write(f"Askelmäärä suodatetusta datasta: {steps}")
@@ -105,4 +98,8 @@ st.subheader("Tehospektritiheys")
 st.line_chart(pd.DataFrame({'Frequency (Hz)': freq[:N // 2], 'PSD': psd[:N // 2]}).set_index('Frequency (Hz)'))
 
 st.subheader("Reitti kartalla")
-st.components.v1.html(open('map.html', 'r').read(), height=500)
+
+m = folium.Map(location=[location_data['Latitude (°)'].mean(), location_data['Longitude (°)'].mean()], zoom_start=15)
+points = list(zip(location_data['Latitude (°)'], location_data['Longitude (°)']))
+folium.PolyLine(points, color='blue', weight=2.5, opacity=1).add_to(m)
+st_map = st_folium(m, width=900, height=650)

@@ -7,8 +7,10 @@ import folium
 from streamlit_folium import st_folium
 
 # Lataa data
-location_data = pd.read_csv('Location.csv')
-df_step = pd.read_csv('Linear Acceleration.csv')
+url1="https://raw.githubusercontent.com/HannuKarjalainen/fysiikkastream/refs/heads/main/Location.csv"
+url2="https://raw.githubusercontent.com/HannuKarjalainen/fysiikkastream/refs/heads/main/Linear%20Acceleration.csv"
+location_data = pd.read_csv(url1)
+df_step = pd.read_csv(url2)
 
 #Suodatetaan datasta selvästi kävelytaajuutta suurempitaajuuksiset vaihtelut pois
 from scipy.signal import butter,filtfilt
@@ -92,10 +94,10 @@ st.write(f"Kuljettu matka: {total_distance:.2f} m")
 st.write(f"Askelpituus: {step_length:.2f} m")
 
 st.subheader("Suodatettu Kiihtyvyysdata")
-st.line_chart(df_step[['Time (s)', 'Linear Acceleration y (m/s^2)']].set_index('Time (s)'))
+st.line_chart(df_step[['Time (s)', 'Linear Acceleration y (m/s^2)']].set_index('Time (s)') , y_label = 'kiihtyvyys akselilla y',x_label = 'aika')
 
 st.subheader("Tehospektritiheys")
-st.line_chart(pd.DataFrame({'Frequency (Hz)': freq[:N // 2], 'PSD': psd[:N // 2]}).set_index('Frequency (Hz)'))
+st.line_chart(pd.DataFrame({'Frequency (Hz)': freq[:N // 2], 'PSD': psd[:N // 2]}).set_index('Frequency (Hz)'), y_label = 'Teho',x_label = 'Taajuus [Hz]')
 
 st.subheader("Reitti kartalla")
 

@@ -81,25 +81,6 @@ average_speed_kmh = average_speed * 3.6  # m/s to km/h
 step_length = total_distance / steps if steps > 0 else 0  # Estä nollalla jakaminen
 
 # Visualisointi
-plt.figure(figsize=(10, 5))
-plt.plot(df_step['Time (s)'], df_step['Linear Acceleration y (m/s^2)'], label='Raw Signal')
-plt.plot(df_step['Time (s)'], filtered_signal, label='Filtered Signal')
-plt.title('Lineaarinen kiihtyvyys akselilla-Y (Suodatettu and Raaka)')
-plt.xlabel('Aika (s)')
-plt.ylabel('Kiihtyvyys (m/s^2)')
-plt.legend()
-plt.grid()
-plt.axis([0, 360, -10, 10])
-plt.show()
-
-plt.figure(figsize=(10, 5))
-plt.plot(freq[:N // 2], psd[:N // 2], label='Tehospektritiheys')
-plt.title('Kiihtyvyyden Tehospektritiheys')
-plt.xlabel('Taajuus (Hz)')
-plt.ylabel('Teho')
-plt.legend()
-plt.show()
-
 # Luo kartta
 m = folium.Map(location=[location_data['Latitude (°)'].mean(), location_data['Longitude (°)'].mean()], zoom_start=15)
 points = list(zip(location_data['Latitude (°)'], location_data['Longitude (°)']))

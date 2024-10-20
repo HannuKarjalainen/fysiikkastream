@@ -6,8 +6,10 @@ from scipy.fft import fft
 import folium
 
 # Lataa data
-location_data = pd.read_csv('Location.csv')
-df_step = pd.read_csv('Linear Acceleration.csv')
+url1 = "https://raw.githubusercontent.com/HannuKarjalainen/fysiikkastream/refs/heads/main/Linear%20Acceleration.csv"
+url2 = "https://raw.githubusercontent.com/HannuKarjalainen/fysiikkastream/refs/heads/main/Location.csv"
+location_data = pd.read_csv(url2)
+df_step = pd.read_csv(url1)
 
 #Suodatetaan datasta selvästi kävelytaajuutta suurempitaajuuksiset vaihtelut pois
 from scipy.signal import butter,filtfilt
